@@ -1,0 +1,50 @@
+* {
+  font-family: 'Poppins', sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -user-select: none;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    margin-top: 0 !important
+  }
+  h1 {
+    font-size: 32px !important;
+  }
+}
+
+body {
+  margin-top: 0;
+  background-color: rgb(238, 238, 238);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.container > * {
+  padding: 5px 0
+}
+
+.error {
+  margin-top: 30px;
+  background-color: #ffebf2;
+  padding: 20px;
+  border-radius: 4px;
+  animation-name: error;
+  animation-duration: .5s;
+  transition: ease-in-out;
+}
+@keyframes error {
+  0% { transform: translateX(0px)}
+  25% { transform: translateX(-30px)}
+  50% { transform: translateX(30px)}
+  100% { transform: translateX(0px)}
+}

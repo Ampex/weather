@@ -1,6 +1,6 @@
-It is simply search bar for searching a interesting git projects.
+It is simply weather app bar for searching a interesting git projects.
 
-# Live demo here: [DEMO](https://bkasperski.pl/gitSearcher)
+# Live demo here: [DEMO](https://bkasperski.pl/weather)
 
 ## Material UI for React
 ### Components:
