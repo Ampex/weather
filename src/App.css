@@ -12,7 +12,8 @@
 
 @media only screen and (max-width: 600px) {
   body {
-    margin-top: 0 !important
+    margin-top: 0 !important;
+    margin-top: 5% !important
   }
   h1 {
     font-size: 32px !important;
@@ -20,7 +21,8 @@
 }
 
 body {
-  margin-top: 0;
+  margin-top: 5%;
+  color: #222;
   background-color: rgb(238, 238, 238);
 }
 
@@ -28,9 +30,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-transform: capitalize;
 }
 .container > * {
-  padding: 5px 0
+  padding: 5px 0;
 }
 
 .error {
