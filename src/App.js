@@ -3,9 +3,7 @@ import './App.css'
 import { Paper, Table, TableRow, TableBody, TableCell, CircularProgress, Grow, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core'
 
 const Circle = () => {
-  return (
-      <CircularProgress size='24px' />    
-  )
+  return ( <CircularProgress size='24px' /> )
 }
 
 class App extends Component {
@@ -13,7 +11,7 @@ class App extends Component {
   state = {
     data: null,
     isLoaded: false,
-    country: 'Warszawa',
+    city: 'Warszawa',
     url: 'https://api.openweathermap.org/data/2.5/weather?q=Warszawa&units=metric&lang=pl&appid=44436d16bd424daef5fce773bf6fe022'
   }
 
@@ -28,7 +26,7 @@ class App extends Component {
   handleChange = async e => {
     this.setState ({
       isLoaded: false,
-      country: e.target.value,
+      city: e.target.value,
     })
     setTimeout(() => {
       fetch (this.state.url)
@@ -36,17 +34,23 @@ class App extends Component {
       .then(data => this.setState ({
         data,
         isLoaded: true,
-        url: `https://api.openweathermap.org/data/2.5/weather?q=${this.state.country}&units=metric&lang=pl&appid=44436d16bd424daef5fce773bf6fe022`
+        url: `https://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&units=metric&lang=pl&appid=44436d16bd424daef5fce773bf6fe022`
       }))
     }, 2000)
   }
 
   render() {
-    const { data, isLoaded, country } = this.state
+    const { data, isLoaded, city } = this.state
     const url = 'http://openweathermap.org/img/wn/'
     const icon = data ? url+data.weather[0].icon+'.png' : <Circle/>
     const description = data ? data.weather[0].description : <Circle/>
     const img = <img alt={description} src={icon} />
+    const cityList = ['Warszawa', 'Łódź', 'Poznań', 'Wrocław', 'Lublin', 'Rzeszów', 'Bydgoszcz', 'Szczecin', 'Białystok', 'Gdańsk', 'Gorzów Wielkopolski', 'Katowice', 'Kielce', 'Olsztyn', 'Opole', 'Toruń', 'Zielona Góra']
+    const citySelect = cityList.map(item => {
+      return (
+        <MenuItem key={item} value={item}>{item}</MenuItem>
+      )
+    })    
     
     return (
       <div className="container">
@@ -54,20 +58,13 @@ class App extends Component {
 
           <InputLabel htmlFor='miasto'>Wybierz miasto</InputLabel>
 
-          <Select
-          onChange={this.handleChange}
-          value={country}
-          >
-            <MenuItem value='Warszawa'>Warszawa</MenuItem>
-            <MenuItem value='Lublin'>Lublin</MenuItem>
-            <MenuItem value='Lódź'>Łódź</MenuItem>
-            <MenuItem value='Szczecin'>Szczecin</MenuItem>
-            <MenuItem value='Cyców'>Cyców</MenuItem>
+          <Select onChange={this.handleChange} value={city}>
+          {citySelect}
           </Select>
 
         </FormControl>
         
-        <h1 style={{marginBottom:0}}>{country}</h1>
+        <h1 style={{marginBottom:0}}>{city}</h1>
         <p style={{marginTop:0}}>Aktualna pogoda</p>
         <Paper>
           <Table>
