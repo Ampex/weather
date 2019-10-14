@@ -54,7 +54,7 @@ class App extends Component {
     
     return (
       <div className="container">
-        <FormControl>
+        <FormControl disabled={isLoaded ? false : true}>
 
           <InputLabel htmlFor='miasto'>Wybierz miasto</InputLabel>
 
