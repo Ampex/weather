@@ -63,19 +63,29 @@ class App extends Component {
           </Select>
 
         </FormControl>
+        {isLoaded && <Grow  in>    
+              <div style={{textAlign: 'center'}}>
+              
+                <h1 style={{marginBottom:0}}>{city}</h1>
+                <p style={{marginTop:0}}>{description}</p>
+                <p style={{marginTop:0}}>{img}</p>
+              </div>
+            </Grow>}
         
-        <h1 style={{marginBottom:0}}>{city}</h1>
-        <p style={{marginTop:0}}>Aktualna pogoda</p>
         <Paper>
           <Table>
             <TableBody>
               <TableRow>
-                <TableCell>{description}</TableCell>
-                <TableCell align='right'>{isLoaded ? <Grow in>{img}</Grow> : <Circle />}</TableCell>
+                <TableCell>Średnia temperatura</TableCell>
+                <TableCell align='right'>{isLoaded ? `${data.main.temp} °C` : <Circle/>}</TableCell>
+              </TableRow>
+              <TableRow >
+                <TableCell variant='footer'>Temperatura minimalna</TableCell>
+                <TableCell variant='footer' align='right'>{isLoaded ? `${data.main.temp_min} °C` : <Circle/>}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Temperatura</TableCell>
-                <TableCell align='right'>{isLoaded ? `${data.main.temp} °C` : <Circle/>}</TableCell>
+                <TableCell variant='footer'>Temperatura maksymalna</TableCell>
+                <TableCell variant='footer' align='right'>{isLoaded ? `${data.main.temp_max} °C` : <Circle/>}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Ciśnienie</TableCell>
