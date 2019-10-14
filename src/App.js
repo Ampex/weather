@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './App.css'
 import { Paper, Table, TableRow, TableBody, TableCell, CircularProgress, Grow, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core'
+import Skeleton from '@material-ui/lab/Skeleton'
 
 const Circle = () => {
   return ( <CircularProgress size='24px' /> )
@@ -63,14 +64,19 @@ class App extends Component {
           </Select>
 
         </FormControl>
-        {isLoaded && <Grow  in>    
-              <div style={{textAlign: 'center'}}>
-              
-                <h1 style={{marginBottom:0}}>{city}</h1>
-                <p style={{marginTop:0}}>{description}</p>
-                <p style={{marginTop:0}}>{img}</p>
-              </div>
-            </Grow>}
+        {isLoaded ? <Grow  in>
+          <div style={{textAlign: 'center'}}>
+            <h1 style={{marginBottom:0}}>{city}</h1>
+            <p style={{marginTop:0}}>{description}</p>
+            <p style={{marginTop:0}}>{img}</p>
+          </div>
+        </Grow> :
+        <Grow in>
+          <div className='container' style={{alignItems: 'center', margin: '20px 0'}}><Skeleton variant='text' width={210} height={20} />
+          <Skeleton variant='text' width={160} height={10} />
+          <Skeleton variant='circle' width={40} height={30} /></div>
+          </Grow>
+        }
         
         <Paper>
           <Table>
