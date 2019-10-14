@@ -3,8 +3,8 @@ import './App.css'
 import { Paper, Table, TableRow, TableBody, TableCell, CircularProgress, Grow, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton'
 
-const Circle = () => {
-  return ( <CircularProgress size='24px' /> )
+const Loading = () => {
+  return ( <Skeleton variant='rect' width='100%' height={8} /> )
 }
 
 class App extends Component {
@@ -43,8 +43,8 @@ class App extends Component {
   render() {
     const { data, isLoaded, city } = this.state
     const url = 'http://openweathermap.org/img/wn/'
-    const icon = data ? url+data.weather[0].icon+'.png' : <Circle/>
-    const description = data ? data.weather[0].description : <Circle/>
+    const icon = data ? url+data.weather[0].icon+'.png' : <Loading/>
+    const description = data ? data.weather[0].description : <Loading/>
     const img = <img alt={description} src={icon} />
     const cityList = ['Warszawa', 'Łódź', 'Poznań', 'Wrocław', 'Lublin', 'Rzeszów', 'Bydgoszcz', 'Szczecin', 'Białystok', 'Gdańsk', 'Gorzów Wielkopolski', 'Katowice', 'Kielce', 'Olsztyn', 'Opole', 'Toruń', 'Zielona Góra']
     const citySelect = cityList.map(item => {
@@ -62,7 +62,7 @@ class App extends Component {
           <Select onChange={this.handleChange} value={city}>
           {citySelect}
           </Select>
-
+ 
         </FormControl>
         {isLoaded ? <Grow  in>
           <div style={{textAlign: 'center'}}>
@@ -72,7 +72,7 @@ class App extends Component {
           </div>
         </Grow> :
         <Grow in>
-          <div className='container' style={{alignItems: 'center', margin: '20px 0'}}><Skeleton variant='text' width={210} height={20} />
+          <div className='container' style={{alignItems: 'center', margin: '21.44px 0'}}><Skeleton variant='text' width={210} height={20} />
           <Skeleton variant='text' width={160} height={10} />
           <Skeleton variant='circle' width={40} height={30} /></div>
           </Grow>
@@ -83,27 +83,27 @@ class App extends Component {
             <TableBody>
               <TableRow>
                 <TableCell>Średnia temperatura</TableCell>
-                <TableCell align='right'>{isLoaded ? `${data.main.temp} °C` : <Circle/>}</TableCell>
+                <TableCell align='right'>{isLoaded ? `${data.main.temp} °C` : <Loading/>}</TableCell>
               </TableRow>
               <TableRow >
                 <TableCell variant='footer'>Temperatura minimalna</TableCell>
-                <TableCell variant='footer' align='right'>{isLoaded ? `${data.main.temp_min} °C` : <Circle/>}</TableCell>
+                <TableCell variant='footer' align='right'>{isLoaded ? `${data.main.temp_min} °C` : <Loading/>}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell variant='footer'>Temperatura maksymalna</TableCell>
-                <TableCell variant='footer' align='right'>{isLoaded ? `${data.main.temp_max} °C` : <Circle/>}</TableCell>
+                <TableCell variant='footer' align='right'>{isLoaded ? `${data.main.temp_max} °C` : <Loading/>}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Ciśnienie</TableCell>
-                <TableCell align='right'>{isLoaded ? `${data.main.pressure} hPa` : <Circle/>}</TableCell>
+                <TableCell align='right'>{isLoaded ? `${data.main.pressure} hPa` : <Loading/>}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Wilgotność</TableCell>
-                <TableCell align='right'>{isLoaded ? `${data.main.humidity} %` : <Circle/>}</TableCell>
+                <TableCell align='right'>{isLoaded ? `${data.main.humidity} %` : <Loading/>}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Prędkość wiatru</TableCell>
-                <TableCell align='right'>{isLoaded ? `${Math.round(data.wind.speed * 3.6)} m/s` : <Circle/>}</TableCell>
+                <TableCell align='right'>{isLoaded ? `${Math.round(data.wind.speed * 3.6)} m/s` : <Loading/>}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
