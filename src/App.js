@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
-import { Paper, Table, TableRow, TableBody, TableCell, Grow, Select, FormControl, InputLabel, MenuItem, Zoom } from '@material-ui/core'
+import { Paper, Table, TableRow, TableBody, TableCell, Grow, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton'
 
 const Loading = () => {
