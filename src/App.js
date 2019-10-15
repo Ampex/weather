@@ -4,7 +4,7 @@ import { Paper, Table, TableRow, TableBody, TableCell, Grow, Select, FormControl
 import Skeleton from '@material-ui/lab/Skeleton'
 
 const Loading = () => {
-  return ( <Skeleton variant='rect' width='100%' height={8} /> )
+  return ( <Skeleton variant='text' width='100%' height={8} /> )
 }
 
 const cityList = ['Warszawa','Łódź','Poznań','Wrocław','Lublin','Rzeszów','Bydgoszcz','Szczecin','Białystok','Gdańsk','Gorzów Wielkopolski','Katowice','Kielce','Kraków','Olsztyn','Opole','Toruń','Zielona Góra']
@@ -16,7 +16,7 @@ const localWeatherKey = 'weatherCity'
 
 const IconWithDescription = ({icon, description}) => (
   <div style={{flex:'0 1', display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-    <img src={`${iconUrl}${icon}.png`} alt={description}/>
+    <img src={`${iconUrl}${icon}.png`} alt={description} style={{backgroundColor: 'burlywood', borderRadius: '50%', margin: 5, padding: 5}}/>
     <span>{description}</span>
   </div>
 )
@@ -93,8 +93,9 @@ class App extends Component {
         :
         <Grow in>
           <div className='container' style={{alignItems: 'center', margin: '21.44px 0'}}><Skeleton variant='text' width={210} height={20} />
+          <Skeleton variant='circle' width={40} height={30} />
           <Skeleton variant='text' width={160} height={10} />
-          <Skeleton variant='circle' width={40} height={30} /></div>
+          </div>
           </Grow>
         }
         {isLoaded ?
@@ -127,7 +128,14 @@ class App extends Component {
             </TableRow>
           </TableBody>
         </Table>
-      </Paper> : <Loading />
+      </Paper> : <React.Fragment>
+        <Loading />
+        <Loading />
+        <Loading />
+        <Loading />
+        <Loading />
+        <Loading />
+      </React.Fragment>
         }
       </div>      
     )
