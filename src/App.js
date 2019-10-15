@@ -16,7 +16,7 @@ const localWeatherKey = 'weatherCity'
 
 const IconWithDescription = ({icon, description}) => (
   <div style={{flex:'0 1', display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-    <img src={`${iconUrl}${icon}.png`} alt={description} style={{backgroundColor: 'burlywood', borderRadius: '50%', margin: 5, padding: 5}}/>
+    <img src={`${iconUrl}${icon}.png`} alt={description} style={{backgroundColor: 'lightskyblue', borderRadius: '50%', margin: 5, padding: 5}}/>
     <span>{description}</span>
   </div>
 )
