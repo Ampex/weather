@@ -1,61 +1,80 @@
 import React, { Component } from 'react'
 import './App.css'
-import { Paper, Table, TableRow, TableBody, TableCell, CircularProgress, Grow, Select, FormControl, InputLabel, MenuItem } from '@material-ui/core'
+import { Paper, Table, TableRow, TableBody, TableCell, Grow, Select, FormControl, InputLabel, MenuItem, Zoom } from '@material-ui/core'
 import Skeleton from '@material-ui/lab/Skeleton'
 
 const Loading = () => {
   return ( <Skeleton variant='rect' width='100%' height={8} /> )
 }
 
+const cityList = ['Warszawa','Łódź','Poznań','Wrocław','Lublin','Rzeszów','Bydgoszcz','Szczecin','Białystok','Gdańsk','Gorzów Wielkopolski','Katowice','Kielce','Kraków','Olsztyn','Opole','Toruń','Zielona Góra']
+
+const getUrlForCity = (city) => `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=pl&appid=44436d16bd424daef5fce773bf6fe022`
+const iconUrl = 'http://openweathermap.org/img/wn/'
+
+const localWeatherKey = 'weatherCity'
+
+const IconWithDescription = ({icon, description}) => (
+  <div style={{flex:'0 1', display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
+    <img src={`${iconUrl}${icon}.png`} alt={description}/>
+    <span>{description}</span>
+  </div>
+)
+
 class App extends Component {
 
   state = {
     data: null,
     isLoaded: false,
-    city: 'Warszawa',
-    url: 'https://api.openweathermap.org/data/2.5/weather?q=Warszawa&units=metric&lang=pl&appid=44436d16bd424daef5fce773bf6fe022'
+    city: ''
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      fetch(this.state.url)
-      .then(response => response.json())
-      .then(data => this.setState ({ data, isLoaded: true }))
-    }, 2000)
-  }
-
-  handleChange = async e => {
-    this.setState ({
-      isLoaded: false,
-      city: e.target.value,
+  fetchCityFromLocalStorage() {
+    let city = cityList[0]
+    const localCity = localStorage.getItem(localWeatherKey)
+    if (localCity !== null && cityList.indexOf(localCity) >= 0) {
+      city = localCity
+    }
+    
+    this.setState({
+      city
     })
-    setTimeout(() => {
-      fetch (this.state.url)
+  }
+
+  fetchWeatherForCity = () => {
+    fetch(getUrlForCity(this.state.city))
       .then(response => response.json())
       .then(data => this.setState ({
         data,
-        isLoaded: true,
-        url: `https://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&units=metric&lang=pl&appid=44436d16bd424daef5fce773bf6fe022`
-      }))
+        isLoaded: true
+      })
+      )
+    }
+
+  componentDidMount() {
+    this.fetchCityFromLocalStorage()
+    setTimeout(() => {
+      this.fetchWeatherForCity()
     }, 2000)
+  }
+
+  handleChange = e => {
+    const city = e.target.value
+    this.setState ({
+      isLoaded: false,
+      city: city,
+    })
+    localStorage.setItem(localWeatherKey, city)
+    setTimeout(() => this.fetchWeatherForCity(), 2000)
   }
 
   render() {
     const { data, isLoaded, city } = this.state
-    const url = 'http://openweathermap.org/img/wn/'
-    const icon = data ? url+data.weather[0].icon+'.png' : <Loading/>
-    const description = data ? data.weather[0].description : <Loading/>
-    const img = <img alt={description} src={icon} />
-    const cityList = ['Warszawa', 'Łódź', 'Poznań', 'Wrocław', 'Lublin', 'Rzeszów', 'Bydgoszcz', 'Szczecin', 'Białystok', 'Gdańsk', 'Gorzów Wielkopolski', 'Katowice', 'Kielce', 'Olsztyn', 'Opole', 'Toruń', 'Zielona Góra']
-    const citySelect = cityList.map(item => {
-      return (
-        <MenuItem key={item} value={item}>{item}</MenuItem>
-      )
-    })    
+    const citySelect = cityList.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)
     
     return (
       <div className="container">
-        <FormControl disabled={isLoaded ? false : true}>
+        <FormControl disabled={!isLoaded}>
 
           <InputLabel htmlFor='miasto'>Wybierz miasto</InputLabel>
 
@@ -64,50 +83,52 @@ class App extends Component {
           </Select>
  
         </FormControl>
-        {isLoaded ? <Grow  in>
+        {isLoaded ?
           <div style={{textAlign: 'center'}}>
             <h1 style={{marginBottom:0}}>{city}</h1>
-            <p style={{marginTop:0}}>{description}</p>
-            <p style={{marginTop:0}}>{img}</p>
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginBottom: 24}}>
+              {data.weather.map((weatherData) => <IconWithDescription key={weatherData.id} {...weatherData}/>)}
+            </div>
           </div>
-        </Grow> :
+        :
         <Grow in>
           <div className='container' style={{alignItems: 'center', margin: '21.44px 0'}}><Skeleton variant='text' width={210} height={20} />
           <Skeleton variant='text' width={160} height={10} />
           <Skeleton variant='circle' width={40} height={30} /></div>
           </Grow>
         }
-        
+        {isLoaded ?
         <Paper>
-          <Table>
-            <TableBody>
-              <TableRow>
-                <TableCell>Średnia temperatura</TableCell>
-                <TableCell align='right'>{isLoaded ? `${data.main.temp} °C` : <Loading/>}</TableCell>
-              </TableRow>
-              <TableRow >
-                <TableCell variant='footer'>Temperatura minimalna</TableCell>
-                <TableCell variant='footer' align='right'>{isLoaded ? `${data.main.temp_min} °C` : <Loading/>}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell variant='footer'>Temperatura maksymalna</TableCell>
-                <TableCell variant='footer' align='right'>{isLoaded ? `${data.main.temp_max} °C` : <Loading/>}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Ciśnienie</TableCell>
-                <TableCell align='right'>{isLoaded ? `${data.main.pressure} hPa` : <Loading/>}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Wilgotność</TableCell>
-                <TableCell align='right'>{isLoaded ? `${data.main.humidity} %` : <Loading/>}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Prędkość wiatru</TableCell>
-                <TableCell align='right'>{isLoaded ? `${Math.round(data.wind.speed * 3.6)} m/s` : <Loading/>}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </Paper>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell>Średnia temperatura</TableCell>
+              <TableCell align='right'>{isLoaded ? `${data.main.temp} °C` : <Loading/>}</TableCell>
+            </TableRow>
+            <TableRow >
+              <TableCell variant='footer'>Temperatura minimalna</TableCell>
+              <TableCell variant='footer' align='right'>{isLoaded ? `${data.main.temp_min} °C` : <Loading/>}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell variant='footer'>Temperatura maksymalna</TableCell>
+              <TableCell variant='footer' align='right'>{isLoaded ? `${data.main.temp_max} °C` : <Loading/>}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Ciśnienie</TableCell>
+              <TableCell align='right'>{isLoaded ? `${data.main.pressure} hPa` : <Loading/>}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Wilgotność</TableCell>
+              <TableCell align='right'>{isLoaded ? `${data.main.humidity} %` : <Loading/>}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Prędkość wiatru</TableCell>
+              <TableCell align='right'>{isLoaded ? `${Math.round(data.wind.speed * 3.6)} m/s` : <Loading/>}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </Paper> : <Loading />
+        }
       </div>      
     )
   }
